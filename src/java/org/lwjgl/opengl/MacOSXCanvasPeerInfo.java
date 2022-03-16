@@ -65,32 +65,12 @@ abstract class MacOSXCanvasPeerInfo extends MacOSXPeerInfo {
 		boolean forceCALayer = true;
 		boolean autoResizable = true; // set the CALayer to autoResize
 		
-		String javaVersion = System.getProperty("java.version");
-		
-		if (javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6")) {
-			// On Java 7 and newer CALayer mode is the only way to use OpenGL with AWT
-			// therefore force it on all JVM's except for the older Java 5 and Java 6
-			// where the older cocoaViewRef NSView method maybe be available.
-			forceCALayer = false;
-		}
-		else if (javaVersion.startsWith("1.7")) {
-			autoResizable = false;
-		}
-		
 		Insets insets = getInsets(component);
 		
 		int top = insets != null ? insets.top : 0;
 		int left = insets != null ? insets.left : 0;
 		
 		window_handle = nInitHandle(awt_surface.lockAndGetHandle(component), getHandle(), window_handle, forceCALayer, autoResizable, component.getX()-left, component.getY()-top);
-		
-		if (javaVersion.startsWith("1.7")) {
-			// fix for CALayer position not covering Canvas due to a Java 7 bug
-			// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7172187
-			addComponentListener(component);
-					
-                        reSetLayerBounds(component, getHandle());
-		}
 	}
 	
 	private void addComponentListener(final Canvas component) {
