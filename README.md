@@ -23,6 +23,7 @@ Bugs/Suggestions: [https://github.com/LWJGL/lwjgl/issues](https://github.com/LWJ
 ant generate-all
 ant compile
 ant compile_native
+ant jars
 ```
 
 ### Build time paths
