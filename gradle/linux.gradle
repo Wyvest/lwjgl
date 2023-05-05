@@ -66,7 +66,7 @@ def version_script_flags = [
 ]
 
 def linker_flags = version_script_flags + [
-        "-shared", "-O2", "-Wall", "-o", libname
+        "-g","-shared", "-O2", "-Wall", "-o", libname
 ] + libs
 
 def compiler = "gcc"
