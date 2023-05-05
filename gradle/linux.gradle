@@ -13,7 +13,7 @@ if (ENV.ARCHITECTURE && target_arch != os_arch) {
     } else if (target_arch == "aarch64") {
         java_home = ENV.JAVA_HOME_11_AARCH64 + "/jre"
     } else if (target_arch == "i386") {
-        java_home = ENV.JAVA_HOME_11_I386 + "/jre"
+        java_home = ENV.JAVA_HOME_8_I386 + "/jre"
     } else if (target_arch == "ppc64el") {
         java_home = ENV.JAVA_HOME_11_PPC64LE + "/jre"
     }
