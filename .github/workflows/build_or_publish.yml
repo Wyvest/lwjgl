@@ -34,7 +34,7 @@ jobs:
             java_arch: x64
             linux_arch: i386
             packages: gcc-multilib
-            extra_java: 11
+            extra_java: 8
             vendor: zulu
           - os: ubuntu-20.04
             arch: amd64
