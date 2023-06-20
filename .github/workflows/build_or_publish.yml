@@ -121,10 +121,10 @@ jobs:
       matrix:
         include:
           - arch: armhf
-            image: oldstable-backports
+            image: oldoldstable-backports
             packages: gcc-arm-linux-gnueabihf libc6-dev-armhf-cross g++-arm-linux-gnueabihf
           - arch: armel
-            image: stable-backports
+            image: oldstable-backports
             packages: gcc-arm-linux-gnueabi libc6-dev-armel-cross g++-arm-linux-gnueabi
 #          - arch: powerpc
 #            image: sid
