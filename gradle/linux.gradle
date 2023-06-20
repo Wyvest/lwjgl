@@ -20,12 +20,6 @@ if (ENV.ARCHITECTURE) {
         } else if (target_arch == "ppc64el") {
             java_home = ENV.JAVA_HOME_11_PPC64LE
         }
-    } else if (target_arch == "amd64") {
-        if (ENV.JAVA_HOME_11_AMD64 != null && !ENV.JAVA_HOME_11_AMD64.isEmpty()) {
-            java_home = ENV.JAVA_HOME_11_AMD64
-        } else {
-            extra_suffix = "-8"
-        }
     }
 }
 
