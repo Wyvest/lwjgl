@@ -54,7 +54,7 @@ public final class Sys {
 	private static final String JNI_LIBRARY_NAME = "lwjgl";
 
 	/** Current version of library */
-	private static final String VERSION = Sys.class.getPackage().getImplementationVersion();
+//	private static final String VERSION = ;
 
 	/** The implementation instance to delegate platform specific behavior to */
 	private static final SysImplementation implementation;
@@ -79,6 +79,11 @@ public final class Sys {
 	}
 
 	static {
+		System.out.println("[LWJGL] Detected environment: Os:"
+				+ LWJGLUtil.Os.CURRENT_OS.name()
+				+ " Arch: " + LWJGLUtil.Os.CURRENT_ARCH.name()
+				+ " Java: " + System.getProperty("java.version"));
+
 		implementation = createImplementation();
 		loadLibrary(JNI_LIBRARY_NAME);
 //		is64Bit = implementation.getPointerSize() == 8;
@@ -115,7 +120,13 @@ public final class Sys {
 	 * Return the version of the core LWJGL libraries as a String.
 	 */
 	public static String getVersion() {
-		return VERSION;
+		String version = Sys.class.getPackage().getImplementationVersion();
+
+		if (version == null || version.isEmpty()) {
+			version = "2.9.4+legacyfabric";
+		}
+
+		return version;
 	}
 
 	/**
