@@ -79,11 +79,6 @@ public final class Sys {
 	}
 
 	static {
-		System.out.println("[LWJGL] Detected environment: Os:"
-				+ LWJGLUtil.Os.CURRENT_OS.name()
-				+ " Arch: " + LWJGLUtil.Os.CURRENT_ARCH.name()
-				+ " Java: " + System.getProperty("java.version"));
-
 		implementation = createImplementation();
 		loadLibrary(JNI_LIBRARY_NAME);
 //		is64Bit = implementation.getPointerSize() == 8;
@@ -95,6 +90,11 @@ public final class Sys {
 			throw new LinkageError("Version mismatch: jar version is '" + required_version +
                              "', native library version is '" + native_jni_version + "'");
 		implementation.setDebug(LWJGLUtil.DEBUG);
+		
+		System.out.println("[LWJGL] Detected environment: Os:"
+				+ LWJGLUtil.Os.CURRENT_OS.name()
+				+ " Arch: " + LWJGLUtil.Os.CURRENT_ARCH.name()
+				+ " Java: " + System.getProperty("java.version"));
 	}
 
 	private static SysImplementation createImplementation() {
