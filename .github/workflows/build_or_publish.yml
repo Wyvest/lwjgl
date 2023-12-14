@@ -122,7 +122,7 @@ jobs:
           dpkg --add-architecture ${{ matrix.linux_arch }} && apt-get clean && apt-get update
           apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install ${{ matrix.packages }} libx11-dev:${{ matrix.linux_arch }} libxrandr-dev:${{ matrix.linux_arch }} libxext-dev:${{ matrix.linux_arch }} libxcursor-dev:${{ matrix.linux_arch }} libxxf86vm-dev:${{ matrix.linux_arch }}
       - if: matrix.arch == 'riscv64'
-        run: apt-get install openjdk-11-jdk:${{ matrix.linux_arch }}
+        run: apt-get -yq -f --allow-unauthenticated --no-install-suggests install openjdk-11-jdk:${{ matrix.linux_arch }}
       - if: matrix.extra_java
         name: Set up ${{ matrix.arch }} ${{ matrix.vendor }} JDK ${{ matrix.extra_java }}
         uses: actions/setup-java@v3
