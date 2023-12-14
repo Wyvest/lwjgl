@@ -120,7 +120,7 @@ jobs:
       matrix:
         include:
           - arch: armhf
-            image: oldoldstable-backports
+            image: oldstable-backports
             packages: gcc-arm-linux-gnueabihf libc6-dev-armhf-cross g++-arm-linux-gnueabihf
           - arch: armel
             image: oldstable-backports
