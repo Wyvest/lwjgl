@@ -60,7 +60,7 @@ jobs:
             ports: true
             extra_java: 11
             vendor: temurin
-          - os: ubuntu-22.04
+          - os: ubuntu-20.04
             arch: riscv64
             java_arch: x64
             linux_arch: riscv64
@@ -74,12 +74,12 @@ jobs:
       run: |
         sudo sed -i 's/deb http/deb [arch=amd64,i386] http/' /etc/apt/sources.list
         sudo grep "ubuntu.com/ubuntu" /etc/apt/sources.list | sudo tee /etc/apt/sources.list.d/ports.list
-        sudo sed -i 's/amd64,i386/arm64,ppc64el,riscv64/' /etc/apt/sources.list.d/ports.list
+        sudo sed -i 's/amd64,i386/${{matrix.linux_arch}}/' /etc/apt/sources.list.d/ports.list
         sudo sed -i 's#http://.*/ubuntu#http://ports.ubuntu.com/ubuntu-ports#' /etc/apt/sources.list.d/ports.list
     - if: (matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04') && matrix.linux_arch
       run: |
         sudo dpkg --add-architecture ${{ matrix.linux_arch }} && sudo apt-get clean && sudo apt-get update
-        sudo apt-get install ${{ matrix.packages }} libx11-dev:${{ matrix.linux_arch }} libxrandr-dev:${{ matrix.linux_arch }} libxext-dev:${{ matrix.linux_arch }} libxcursor-dev:${{ matrix.linux_arch }} libxxf86vm-dev:${{ matrix.linux_arch }}
+        sudo apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install ${{ matrix.packages }} libx11-dev:${{ matrix.linux_arch }} libxrandr-dev:${{ matrix.linux_arch }} libxext-dev:${{ matrix.linux_arch }} libxcursor-dev:${{ matrix.linux_arch }} libxxf86vm-dev:${{ matrix.linux_arch }}
     - if: matrix.arch == 'riscv64'
       run: sudo apt-get install openjdk-11-jdk:${{ matrix.linux_arch }}
     - if: matrix.extra_java
