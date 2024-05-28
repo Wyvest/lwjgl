@@ -5,10 +5,10 @@ def target_arch = getArch(System.getProperty("targetArch", os_arch))
 
 def java_home = System.getProperty("java.home")
 
-def alternative_java_home = System.getProperty("targetJavaHomeVar")
+def alternative_java_home = System.getProperty("targetJavaHome")
 
 if (alternative_java_home != null && alternative_java_home != "") {
-    java_home = ENV[alternative_java_home]
+    java_home = alternative_java_home
 }
 
 def sdkhome = ENV.VCToolsInstallDir ? ENV.VCToolsInstallDir : ENV.MSVC
