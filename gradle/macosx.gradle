@@ -143,7 +143,7 @@ tasks.register("macosx_natives_symbols", Exec) {
 tasks.register("macosx_natives_link", Exec) {
     dependsOn "macosx_natives_symbols"
 
-    def jdk_lib = "${java_home}/../Libraries"
+    def jdk_lib = "${javavmroot}/Libraries"
     if (file("${java_home}/lib/libjawt.dylib").exists()) {
         jdk_lib = "${java_home}/lib"
     }
