@@ -17,6 +17,7 @@ jobs:
             msvc_arch: amd64
           - os: windows-2022
             arch: arm64
+            java_arch: x64
             msvc_arch: amd64_arm64
             extra_java: 17
             vendor: zulu
@@ -33,16 +34,12 @@ jobs:
             packages: gcc-multilib
             extra_java: 11
             vendor: zulu
-            args: -Dtarget.java.home="JAVA_HOME_11_I386"
-          - os: ubuntu-20.04
-            arch: amd64
-            args: -Dtarget.java.home="$JAVA_HOME_8_X64" -Dtarget.java.version="1.8"
+            args: -Dtarget.java.home="$JAVA_HOME_11_I386"
           - os: ubuntu-20.04
             arch: amd64
             java_arch: x64
-            extra_java: 11
-            vendor: zulu
-            args: -Dtarget.java.home="$JAVA_HOME_11_X64"
+          - os: ubuntu-20.04
+            arch: amd64
     runs-on: ${{ matrix.os }}
     continue-on-error: true
     steps:

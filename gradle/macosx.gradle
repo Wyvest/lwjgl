@@ -7,7 +7,11 @@ def target_arch = getArch(System.getProperty("target.arch", os_arch))
 
 def java_home = System.getProperty("target.java.home", System.getProperty("java.home"))
 
-def javavmroot = java_home + "/.."
+def javavmroot = java_home
+
+while (!file("${javavmroot}/include/darwin").exists()) {
+    javavmroot = "${javavmroot}/.."
+}
 
 def macos_arch = "x86_64"
 
