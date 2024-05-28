@@ -11,22 +11,27 @@ jobs:
             arch: x86
             java_arch: x86
             msvc_arch: amd64_x86
+            java_test_home: $JAVA_HOME_17_X64
           - os: windows-2022
             arch: x64
             java_arch: x64
             msvc_arch: amd64
+            java_test_home: $JAVA_HOME_17_X64
           - os: windows-2022
             arch: arm64
             java_arch: x64
             msvc_arch: amd64_arm64
             extra_java: 17
             vendor: zulu
+            java_test_home: $JAVA_HOME_17_X64
           - os: macos-13
             arch: x64
             java_arch: x64
+            java_test_home: $JAVA_HOME_17_X64
           - os: macos-14
             arch: arm64
             java_arch: arm64
+            java_test_home: $JAVA_HOME_17_X64
           - os: ubuntu-20.04
             arch: i386
             java_arch: x64
@@ -34,14 +39,17 @@ jobs:
             packages: gcc-multilib
             extra_java: 11
             vendor: zulu
+            java_test_home: $JAVA_HOME_17_X64
           - os: ubuntu-20.04
             arch: amd64
             java_arch: x64
+            java_test_home: $JAVA_HOME_17_X64
           - os: ubuntu-20.04
             arch: amd64
             java_arch: x64
             extra_java: 11
             vendor: zulu
+            java_test_home: $JAVA_HOME_17_X64
     runs-on: ${{ matrix.os }}
     continue-on-error: true
     steps:
@@ -70,6 +78,8 @@ jobs:
       uses: ilammy/msvc-dev-cmd@v1
       with:
           arch: ${{ matrix.msvc_arch }}
+    - if: (matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04')
+      run: echo "${{ matrix.java_test_home }}"
     - name: Build natives
       run: ./gradlew compile_native --stacktrace
       env:
