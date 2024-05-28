@@ -139,7 +139,7 @@ jobs:
           distribution: zulu
           architecture: ${{ matrix.java_arch }}
       - name: Build natives
-        run: ./gradlew compile_native --stacktrace
+        run: ./gradlew compile_native ${{ matrix.args }} --stacktrace
         env:
           ARCHITECTURE: ${{ matrix.arch }}
           TARGET_JAVA: /usr/lib/jvm/java-11-openjdk-${{ matrix.arch }}

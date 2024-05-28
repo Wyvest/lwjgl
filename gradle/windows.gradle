@@ -5,6 +5,10 @@ def target_arch = getArch(System.getProperty("targetArch", os_arch))
 
 def java_home = System.getProperty("java.home")
 
+System.properties.forEach {
+    println("${it}")
+}
+
 if (System.hasProperty("targetJavaHomeVar")) {
     java_home = ENV[System.getProperty("targetJavaHomeVar")]
 }
