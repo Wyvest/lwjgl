@@ -1,10 +1,10 @@
 def ENV = System.getenv()
 
 def os_arch = getArch(System.getProperty("os.arch"))
-def target_arch = getArch(System.getProperty("target.arch", os_arch))
+def target_arch = getArch(System.getProperty("targetArch", os_arch))
 
-def java_home = System.getProperty("target.java.home", System.getProperty("java.home"))
-def java_version = System.getProperty("target.java.version", System.getProperty("java.version"))
+def java_home = System.getProperty("targetJavaHome", System.getProperty("java.home"))
+def java_version = System.getProperty("targetJavaVersion", System.getProperty("java.version"))
 
 def extra_suffix = ""
 

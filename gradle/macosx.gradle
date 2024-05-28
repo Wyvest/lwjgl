@@ -3,9 +3,9 @@ import org.apache.tools.ant.taskdefs.condition.Os
 def ENV = System.getenv()
 
 def os_arch = getArch(System.getProperty("os.arch"))
-def target_arch = getArch(System.getProperty("target.arch", os_arch))
+def target_arch = getArch(System.getProperty("targetArch", os_arch))
 
-def java_home = System.getProperty("target.java.home", System.getProperty("java.home"))
+def java_home = System.getProperty("targetJavaHome", System.getProperty("java.home"))
 
 def javavmroot = java_home
 
@@ -32,14 +32,6 @@ try {
     }
 } catch (ignored) {
     ignored.printStackTrace()
-}
-
-if (developer_path == "/Developer" && ENV.ARCHITECTURE) {
-    developer_path = (ENV.XCODE_13_DEVELOPER_DIR ? ENV.XCODE_13_DEVELOPER_DIR : (
-            ENV.XCODE_14_DEVELOPER_DIR ? ENV.XCODE_14_DEVELOPER_DIR : (
-                    ENV.XCODE_15_DEVELOPER_DIR ? ENV.XCODE_15_DEVELOPER_DIR : "/Developer"
-            )
-    ))
 }
 
 
