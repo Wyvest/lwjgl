@@ -153,7 +153,7 @@ jobs:
           architecture: ${{ matrix.arch }}
 
       # Setup runtime java
-      - if: (matrix.extra_java == null || matrix.extra_java == '')
+      - if: matrix.extra_java
         name: Set up x64 zulu JDK 8
         uses: actions/setup-java@v4
         with:
