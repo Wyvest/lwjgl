@@ -35,7 +35,7 @@ jobs:
             packages: gcc-multilib
             extra_java: 11
             vendor: zulu
-            args: -Dtarget.java.home="$JAVA_HOME_11_I386"
+            args: -Dtarget.java.home="$JAVA_HOME_11_I386" -Dtarget.arch=i386
           - os: ubuntu-20.04
             arch: amd64
             java_arch: x64
