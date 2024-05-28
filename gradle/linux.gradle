@@ -1,10 +1,10 @@
 def ENV = System.getenv()
 
 def os_arch = getArch(System.getProperty("os.arch"))
-def target_arch = ENV.ARCHITECTURE ? getArch(ENV.ARCHITECTURE) : os_arch
+def target_arch = getArch(System.getProperty("target.arch", os_arch))
 
-def java_home = System.getProperty("java.home")
-def java_version = System.getProperty("java.version")
+def java_home = System.getProperty("target.java.home", System.getProperty("java.home"))
+def java_version = System.getProperty("target.java.version", System.getProperty("java.version"))
 
 def extra_suffix = ""
 
@@ -15,8 +15,6 @@ if (ENV.ARCHITECTURE) {
             java_home = ENV.TARGET_JAVA
         } else if (target_arch == "aarch64") {
             java_home = ENV.JAVA_HOME_11_AARCH64
-        } else if (target_arch == "i386") {
-            java_home = ENV.JAVA_HOME_11_I386
         } else if (target_arch == "ppc64el") {
             java_home = ENV.JAVA_HOME_11_PPC64LE
         }

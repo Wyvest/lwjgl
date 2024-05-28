@@ -1,9 +1,9 @@
 def ENV = System.getenv()
 
 def os_arch = getArch(System.getProperty("os.arch"))
-def target_arch = ENV.ARCHITECTURE ? getArch(ENV.ARCHITECTURE) : os_arch
+def target_arch = getArch(System.getProperty("target.arch", os_arch))
 
-def java_home = System.getProperty("java.home")
+def java_home = System.getProperty("target.java.home", System.getProperty("java.home"))
 
 if (ENV.ARCHITECTURE && target_arch == "aarch64") {
     java_home = ENV.JAVA_HOME_17_ARM64 + "/jre"
