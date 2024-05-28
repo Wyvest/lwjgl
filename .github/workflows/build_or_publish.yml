@@ -21,7 +21,7 @@ jobs:
             msvc_arch: amd64_arm64
             extra_java: 17
             vendor: zulu
-            args: -DtargetJavaHome="$JAVA_HOME_17_ARM64" -DtargetArch=arm64
+            args: -DtargetJavaHomeVar="JAVA_HOME_17_ARM64" -DtargetArch=arm64
           - os: macos-13
             arch: x64
             args: -Dtarget.java.home="$JAVA_HOME_8_X64"
