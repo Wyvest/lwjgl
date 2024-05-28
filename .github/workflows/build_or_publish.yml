@@ -90,6 +90,7 @@ jobs:
     - name: Build natives
       run: ./gradlew compile_native ${{ matrix.args }} --stacktrace
 
+    # Upload result
     - uses: actions/upload-artifact@v4
       with:
         name: natives-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.extra_java }}-${{ matrix.java_arch }}
@@ -105,31 +106,33 @@ jobs:
     strategy:
       matrix:
         include:
+          # Linux aarch64
           - os: ubuntu:20.04
             arch: aarch64
-            java_arch: x64
             linux_arch: arm64
             packages: gcc-aarch64-linux-gnu libc6-dev-arm64-cross g++-aarch64-linux-gnu
             extra_java: 11
             vendor: zulu
             args: -DtargetJavaHome="$JAVA_HOME_11_AARCH64" -DtargetArch=aarch64
+          # Linux ppc64le
           - os: ubuntu:20.04
             arch: ppc64le
-            java_arch: x64
             linux_arch: ppc64el
             packages: gcc-powerpc64le-linux-gnu libc6-dev-ppc64el-cross g++-powerpc64le-linux-gnu
             extra_java: 11
             vendor: temurin
             args: -DtargetJavaHome="$JAVA_HOME_11_PPC64LE" -DtargetArch=ppc64le
+          # Linux riscv64
           - os: ubuntu:20.04
             arch: riscv64
-            java_arch: x64
             linux_arch: riscv64
             packages: gcc-riscv64-linux-gnu libc6-dev-riscv64-cross g++-riscv64-linux-gnu
             args: -DtargetJavaHome="/usr/lib/jvm/java-11-openjdk-riscv64" -DtargetArch=riscv64
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+
+      # Setup build dependencies
       - run: |
           sed -i 's/deb http/deb [arch=amd64,i386] http/' /etc/apt/sources.list
           grep "ubuntu.com/ubuntu" /etc/apt/sources.list | tee /etc/apt/sources.list.d/ports.list
@@ -137,6 +140,8 @@ jobs:
           sed -i 's#http://.*/ubuntu#http://ports.ubuntu.com/ubuntu-ports#' /etc/apt/sources.list.d/ports.list
           dpkg --add-architecture ${{ matrix.linux_arch }} && apt-get clean && apt-get update
           apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install ${{ matrix.packages }} libx11-dev:${{ matrix.linux_arch }} libxrandr-dev:${{ matrix.linux_arch }} libxext-dev:${{ matrix.linux_arch }} libxcursor-dev:${{ matrix.linux_arch }} libxxf86vm-dev:${{ matrix.linux_arch }}
+
+      # Setup target java
       - if: matrix.arch == 'riscv64'
         run: apt-get -yq -f --allow-unauthenticated --no-install-suggests install openjdk-11-jdk:${{ matrix.linux_arch }}
       - if: matrix.extra_java
@@ -146,10 +151,19 @@ jobs:
           java-version: ${{ matrix.extra_java }}
           distribution: ${{ matrix.vendor }}
           architecture: ${{ matrix.arch }}
+
+      # Setup runtime java
+      - if: (matrix.extra_java == null || matrix.extra_java == '')
+        name: Set up x64 zulu JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: 8
+          distribution: zulu
+
       - name: Build natives
         run: ./gradlew compile_native ${{ matrix.args }} --stacktrace
-        env:
-          TARGET_JAVA: /usr/lib/jvm/java-11-openjdk-${{ matrix.arch }}
+
+      # Upload result
       - uses: actions/upload-artifact@v4
         with:
           name: natives-linux-${{ matrix.arch }}
@@ -160,10 +174,12 @@ jobs:
     strategy:
       matrix:
         include:
+          # Linux armhf
           - arch: armhf
             image: oldstable-backports
             packages: gcc-arm-linux-gnueabihf libc6-dev-armhf-cross g++-arm-linux-gnueabihf
             args: -DtargetJavaHome="/usr/lib/jvm/java-11-openjdk-armhf" -DtargetArch=armhf
+          # Linux armel
           - arch: armel
             image: oldstable-backports
             packages: gcc-arm-linux-gnueabi libc6-dev-armel-cross g++-arm-linux-gnueabi
@@ -180,6 +196,8 @@ jobs:
       image: debian:${{ matrix.image }}
     steps:
       - uses: actions/checkout@v4
+
+      # Setup build dependencies
       - if: matrix.image == 'sid'
         run: |
           apt-get clean && apt-get update && apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install debian-ports-archive-keyring
@@ -189,11 +207,15 @@ jobs:
       - run: dpkg --add-architecture ${{ matrix.arch }} && apt-get clean && apt-get update
       - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install ${{ matrix.packages }}
       - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install libx11-dev:${{ matrix.arch }} libxrandr-dev:${{ matrix.arch }} libxext-dev:${{ matrix.arch }} libxcursor-dev:${{ matrix.arch }} libxxf86vm-dev:${{ matrix.arch }}
+
+      # Setup target java
       - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install openjdk-11-jdk:${{ matrix.arch }}
+
+      # Build natives
       - name: Build natives
         run: ./gradlew compile_native ${{ matrix.args }} --stacktrace
-        env:
-          TARGET_JAVA: /usr/lib/jvm/java-11-openjdk-${{ matrix.arch }}
+
+      # Upload result
       - uses: actions/upload-artifact@v4
         with:
           name: natives-linux-${{ matrix.arch }}
