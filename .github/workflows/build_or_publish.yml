@@ -21,7 +21,7 @@ jobs:
             msvc_arch: amd64_arm64
             extra_java: 17
             vendor: zulu
-            args: -DtargetJavaHomeVar=JAVA_HOME_17_ARM64 -DtargetArch=arm64
+            args: -DtargetArch=arm64 -DtargetJavaHomeVar=JAVA_HOME_17_ARM64
           - os: macos-13
             arch: x64
             args: -Dtarget.java.home="$JAVA_HOME_8_X64"
@@ -75,7 +75,6 @@ jobs:
       run: ./gradlew compile_native ${{ matrix.args }} --stacktrace
       env:
         ARCHITECTURE: ${{ matrix.arch }}
-        TARGET_JAVA: /usr/lib/jvm/java-11-openjdk-${{ matrix.arch }}
     - uses: actions/upload-artifact@v4
       with:
         name: natives-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.extra_java }}-${{ matrix.java_arch }}
@@ -98,6 +97,7 @@ jobs:
             packages: gcc-aarch64-linux-gnu libc6-dev-arm64-cross g++-aarch64-linux-gnu
             extra_java: 11
             vendor: zulu
+            args: -Dtarget.java.home="$JAVA_HOME_11_AARCH64" -Dtarget.arch=aarch64
           - os: ubuntu:20.04
             arch: ppc64le
             java_arch: x64
@@ -105,11 +105,13 @@ jobs:
             packages: gcc-powerpc64le-linux-gnu libc6-dev-ppc64el-cross g++-powerpc64le-linux-gnu
             extra_java: 11
             vendor: temurin
+            args: -Dtarget.java.home="$JAVA_HOME_11_PPC64LE" -Dtarget.arch=ppc64le
           - os: ubuntu:20.04
             arch: riscv64
             java_arch: x64
             linux_arch: riscv64
             packages: gcc-riscv64-linux-gnu libc6-dev-riscv64-cross g++-riscv64-linux-gnu
+            args: -Dtarget.java.home="/usr/lib/jvm/java-11-openjdk-riscv64" -Dtarget.arch=riscv64
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
@@ -154,9 +156,11 @@ jobs:
           - arch: armhf
             image: oldstable-backports
             packages: gcc-arm-linux-gnueabihf libc6-dev-armhf-cross g++-arm-linux-gnueabihf
+            args: -Dtarget.java.home="/usr/lib/jvm/java-11-openjdk-armhf" -Dtarget.arch=armhf
           - arch: armel
             image: oldstable-backports
             packages: gcc-arm-linux-gnueabi libc6-dev-armel-cross g++-arm-linux-gnueabi
+            args: -Dtarget.java.home="/usr/lib/jvm/java-11-openjdk-armel" -Dtarget.arch=armel
 #          - arch: powerpc
 #            image: sid
 #            packages: gcc-powerpc-linux-gnu libc6-dev-powerpc-cross g++-powerpc-linux-gnu
@@ -186,7 +190,7 @@ jobs:
           distribution: zulu
           architecture: x64
       - name: Build natives
-        run: ./gradlew compile_native --stacktrace
+        run: ./gradlew compile_native ${{ matrix.args }} --stacktrace
         env:
           ARCHITECTURE: ${{ matrix.arch }}
           TARGET_JAVA: /usr/lib/jvm/java-11-openjdk-${{ matrix.arch }}
