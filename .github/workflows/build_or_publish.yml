@@ -186,12 +186,6 @@ jobs:
             packages: gcc-arm-linux-gnueabi libc6-dev-armel-cross g++-arm-linux-gnueabi
             args: -DtargetJavaHome="/usr/lib/jvm/java-17-openjdk-armel" -DtargetArch=armel
             java_version: 17
-#          - arch: powerpc
-#            image: sid
-#            packages: gcc-powerpc-linux-gnu libc6-dev-powerpc-cross g++-powerpc-linux-gnu
-#          - arch: ppc64
-#            image: sid
-#            packages: gcc-powerpc64-linux-gnu libc6-dev-ppc64-cross g++-powerpc64-linux-gnu
     runs-on: ubuntu-latest
     continue-on-error: true
     container:
@@ -199,13 +193,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Setup build dependencies
-      - if: matrix.image == 'sid'
-        run: |
-          apt-get clean && apt-get update && apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install debian-ports-archive-keyring
-          echo "deb http://ftp.ports.debian.org/debian-ports unstable main" > /etc/apt/sources.list
-          echo "deb http://ftp.ports.debian.org/debian-ports unreleased main" > /etc/apt/sources.list
-          echo "deb http://ftp.ports.debian.org/debian-ports experimental main" > /etc/apt/sources.list
       - run: dpkg --add-architecture ${{ matrix.arch }} && apt-get clean && apt-get update
       - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install ${{ matrix.packages }}
       - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install libx11-dev:${{ matrix.arch }} libxrandr-dev:${{ matrix.arch }} libxext-dev:${{ matrix.arch }} libxcursor-dev:${{ matrix.arch }} libxxf86vm-dev:${{ matrix.arch }}
