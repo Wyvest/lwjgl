@@ -210,8 +210,8 @@ jobs:
       - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install ${{ matrix.packages }}
       - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install libx11-dev:${{ matrix.arch }} libxrandr-dev:${{ matrix.arch }} libxext-dev:${{ matrix.arch }} libxcursor-dev:${{ matrix.arch }} libxxf86vm-dev:${{ matrix.arch }}
 
-      # Setup target java
-      - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install openjdk-${{ matrix.java_version }}-jdk:${{ matrix.arch }}
+      # Setup target and runtime java
+      - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install openjdk-${{ matrix.java_version }}-jdk:${{ matrix.arch }} openjdk-${{ matrix.java_version }}-jre-headless:amd64
 
       # Build natives
       - name: Build natives
