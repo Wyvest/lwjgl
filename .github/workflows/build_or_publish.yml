@@ -179,11 +179,13 @@ jobs:
             image: bullseye-backports
             packages: gcc-arm-linux-gnueabihf libc6-dev-armhf-cross g++-arm-linux-gnueabihf
             args: -DtargetJavaHome="/usr/lib/jvm/java-11-openjdk-armhf" -DtargetArch=armhf
+            java_version: 11
           # Linux armel
           - arch: armel
             image: bookworm-backports
             packages: gcc-arm-linux-gnueabi libc6-dev-armel-cross g++-arm-linux-gnueabi
-            args: -DtargetJavaHome="/usr/lib/jvm/java-11-openjdk-armel" -DtargetArch=armel
+            args: -DtargetJavaHome="/usr/lib/jvm/java-17-openjdk-armel" -DtargetArch=armel
+            java_version: 17
 #          - arch: powerpc
 #            image: sid
 #            packages: gcc-powerpc-linux-gnu libc6-dev-powerpc-cross g++-powerpc-linux-gnu
@@ -209,7 +211,7 @@ jobs:
       - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install libx11-dev:${{ matrix.arch }} libxrandr-dev:${{ matrix.arch }} libxext-dev:${{ matrix.arch }} libxcursor-dev:${{ matrix.arch }} libxxf86vm-dev:${{ matrix.arch }}
 
       # Setup target java
-      - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install openjdk-11-jdk:${{ matrix.arch }}
+      - run: apt-get -yq -f --allow-unauthenticated --no-install-suggests --no-install-recommends install openjdk-${{ matrix.java_version }}-jdk:${{ matrix.arch }}
 
       # Build natives
       - name: Build natives
