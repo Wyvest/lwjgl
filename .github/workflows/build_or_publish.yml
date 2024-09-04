@@ -176,12 +176,12 @@ jobs:
         include:
           # Linux armhf
           - arch: armhf
-            image: oldstable-backports
+            image: bullseye-backports
             packages: gcc-arm-linux-gnueabihf libc6-dev-armhf-cross g++-arm-linux-gnueabihf
             args: -DtargetJavaHome="/usr/lib/jvm/java-11-openjdk-armhf" -DtargetArch=armhf
           # Linux armel
           - arch: armel
-            image: oldstable-backports
+            image: bullseye-backports
             packages: gcc-arm-linux-gnueabi libc6-dev-armel-cross g++-arm-linux-gnueabi
             args: -DtargetJavaHome="/usr/lib/jvm/java-11-openjdk-armel" -DtargetArch=armel
 #          - arch: powerpc
