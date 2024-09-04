@@ -182,7 +182,7 @@ jobs:
             java_version: 11
           # Linux armel
           - arch: armel
-            image: bookworm-backports
+            image: trixie-backports
             packages: gcc-arm-linux-gnueabi libc6-dev-armel-cross g++-arm-linux-gnueabi
             args: -DtargetJavaHome="/usr/lib/jvm/java-17-openjdk-armel" -DtargetArch=armel
             java_version: 17
