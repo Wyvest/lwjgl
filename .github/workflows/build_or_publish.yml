@@ -181,7 +181,7 @@ jobs:
             args: -DtargetJavaHome="/usr/lib/jvm/java-11-openjdk-armhf" -DtargetArch=armhf
           # Linux armel
           - arch: armel
-            image: bullseye-backports
+            image: bookworm-backports
             packages: gcc-arm-linux-gnueabi libc6-dev-armel-cross g++-arm-linux-gnueabi
             args: -DtargetJavaHome="/usr/lib/jvm/java-11-openjdk-armel" -DtargetArch=armel
 #          - arch: powerpc
