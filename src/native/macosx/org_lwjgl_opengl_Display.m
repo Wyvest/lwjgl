@@ -230,6 +230,7 @@ static NSUInteger lastModifierFlags = 0;
 }
 
 - (void) _surfaceNeedsUpdate:(NSNotification*)notification {
+	[self update];
 }
 
 - (void)setOpenGLContext:(NSOpenGLContext*)context {
